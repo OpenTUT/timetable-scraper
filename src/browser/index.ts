@@ -8,4 +8,6 @@ declare global {
   }
 }
 
-window.ReactNativeWebView?.postMessage(JSON.stringify(scraper()));
+window.ReactNativeWebView?.postMessage(
+  JSON.stringify({ type: 'timetable', data: scraper() }),
+);
