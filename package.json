@@ -1,10 +1,7 @@
 {
   "name": "timetable-scraper",
-  "version": "1.0.0",
-  "keywords": [],
-  "author": "",
+  "version": "0.0.1",
   "license": "MIT",
-  "description": "",
   "type": "module",
   "exports": {
     ".": {
@@ -16,14 +13,18 @@
       "import": "./dist/browser/index.js"
     }
   },
+  "files": ["dist", "src"],
   "scripts": {
-    "build": "tsc -b && rollup -c",
+    "build": "rimraf dist && tsc -b && rollup -c",
+    "clean": "rimraf dist",
+    "prepack": "npm run clean && npm run build",
     "lint": "biome lint",
     "format": "biome format"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@rollup/plugin-typescript": "^12.1.2",
+    "rimraf": "^6.0.1",
     "rollup": "^4.41.1",
     "tslib": "^2.8.1",
     "typescript": "^5.8.3"
