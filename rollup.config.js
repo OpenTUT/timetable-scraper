@@ -7,7 +7,7 @@ export default defineConfig({
     dir: 'dist/browser',
   },
   plugins: [
-    typescript({ tsconfig: 'tsconfig.browser.json' }),
+    typescript({ tsconfig: 'src/browser/tsconfig.json' }),
     {
       name: 'export-js-as-string',
       generateBundle(_, bundle) {

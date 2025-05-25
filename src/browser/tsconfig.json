@@ -9,6 +9,5 @@
     "strict": true,
     "skipLibCheck": true,
     "verbatimModuleSyntax": true
-  },
-  "include": ["src/browser"]
+  }
 }
