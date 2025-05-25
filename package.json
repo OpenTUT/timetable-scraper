@@ -15,11 +15,12 @@
   },
   "files": ["dist", "src"],
   "scripts": {
-    "build": "rimraf dist && tsc -b && rollup -c",
+    "build": "npm run clean && tsc -b && rollup -c",
     "clean": "rimraf dist",
     "prepack": "npm run clean && npm run build",
     "lint": "biome lint",
-    "format": "biome format"
+    "format": "biome format",
+    "test": "vitest"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
@@ -27,7 +28,8 @@
     "rimraf": "^6.0.1",
     "rollup": "^4.41.1",
     "tslib": "^2.8.1",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.4"
   },
   "dependencies": {
     "zod": "^3.25.28"
