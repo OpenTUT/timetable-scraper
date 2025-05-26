@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.src.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "exclude": ["src/browser"],
+  "references": [{ "path": "./tsconfig.src.json" }]
+}

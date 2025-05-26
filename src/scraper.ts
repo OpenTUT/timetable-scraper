@@ -1,5 +1,5 @@
-import type { Subject } from '../Subject';
-import type { Timetable } from '../Timetable';
+import type { Subject } from './Subject.js';
+import type { Timetable } from './Timetable.js';
 
 export function scraper(): Timetable | null {
   let year: string | null = null;
