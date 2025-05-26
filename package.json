@@ -15,7 +15,7 @@
   },
   "files": ["dist", "src"],
   "scripts": {
-    "build": "tsc -b && rolldown -c",
+    "build": "tsc -b && rolldown -c rolldown.config.ts",
     "clean": "tsc -b --clean && rimraf dist",
     "prepack": "npm run clean && npm run build",
     "lint": "biome lint",
@@ -28,6 +28,7 @@
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@types/node": "^22.15.21",
+    "jsdom": "^26.1.0",
     "rimraf": "^6.0.1",
     "rolldown": "^1.0.0-beta.9",
     "typescript": "^5.8.3",

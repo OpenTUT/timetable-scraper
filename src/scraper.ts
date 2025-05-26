@@ -7,7 +7,7 @@ export function scraper(): Timetable | null {
   const getFirstOrNull = <T>(arr: T[]) => (arr.length > 0 ? arr[0] : null);
 
   const getTextOrNull = (elm: HTMLElement | null) => {
-    const text = elm?.innerText.trim();
+    const text = elm?.textContent?.trim();
     return text ? text : null;
   };
 
