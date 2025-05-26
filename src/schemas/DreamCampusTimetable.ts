@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { DreamCampusSubject } from './subject.js';
+import { DreamCampusSubject } from './DreamCampusSubject.js';
 
 export const DreamCampusTimetable = z.object({
   belong: z.string().nullable(),

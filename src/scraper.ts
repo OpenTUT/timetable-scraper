@@ -1,7 +1,7 @@
-import type { DreamCampusSubject } from './dreamCampus/subject.js';
-import type { DreamCampusTimetable } from './dreamCampus/timetable.js';
-import type { Subject } from './Subject.js';
-import type { Timetable } from './Timetable.js';
+import type { DreamCampusSubject } from './schemas/DreamCampusSubject.js';
+import type { DreamCampusTimetable } from './schemas/DreamCampusTimetable.js';
+import type { Subject } from './schemas/Subject.js';
+import type { Timetable } from './schemas/Timetable.js';
 
 export function scraper(
   dreamCampusTimetable: DreamCampusTimetable,

@@ -1,5 +1,5 @@
-import type { DreamCampusSubject } from './subject.js';
-import type { DreamCampusTimetable } from './timetable.js';
+import type { DreamCampusSubject } from './schemas/DreamCampusSubject.js';
+import type { DreamCampusTimetable } from './schemas/DreamCampusTimetable.js';
 
 export function getDreamCampusTimetable(): DreamCampusTimetable {
   return {

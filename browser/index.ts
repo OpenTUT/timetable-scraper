@@ -1,4 +1,4 @@
-import { getDreamCampusTimetable } from '../src/dreamCampus';
+import { getDreamCampusTimetable } from '../src/dreamCampus.js';
 
 declare global {
   interface Window {

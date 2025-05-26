@@ -1,8 +1,8 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { describe, expect, test } from 'vitest';
-import { scraper } from '../src/scraper.js';
-import { loadHTML } from './utils.js';
+import { getDreamCampusTimetable, scraper } from '../src/index.js';
 import test0Expected from './test0.expected.js';
-import { getDreamCampusTimetable } from '../src/dreamCampus/index.js';
 
 describe('getSubject', () => {
   test('getTimetable returns correct object', () => {
@@ -10,3 +10,8 @@ describe('getSubject', () => {
     expect(scraper(getDreamCampusTimetable())).toStrictEqual(test0Expected);
   });
 });
+
+function loadHTML(relativePath: string) {
+  const html = readFileSync(join(import.meta.dirname, relativePath), 'utf-8');
+  document.body.innerHTML = html;
+}
