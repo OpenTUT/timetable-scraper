@@ -1,7 +1,7 @@
 import { defineConfig } from 'rolldown';
 
 export default defineConfig({
-  input: 'src/browser/index.ts',
+  input: 'browser/index.ts',
   output: {
     dir: 'dist/browser',
   },

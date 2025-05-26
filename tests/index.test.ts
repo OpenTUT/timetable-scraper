@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, test } from 'vitest';
-import { scraper } from '../scraper.js';
+import { scraper } from '../src/scraper.js';
 
 describe('getSubject', () => {
   test('getTimetable returns correct object', () => {

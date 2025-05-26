@@ -1,8 +1,9 @@
 {
   "extends": "./tsconfig.src.json",
   "compilerOptions": {
-    "noEmit": true
+    "noEmit": true,
+    "rootDir": "./tests"
   },
-  "exclude": ["src/browser"],
+  "include": ["tests"],
   "references": [{ "path": "./tsconfig.src.json" }]
 }

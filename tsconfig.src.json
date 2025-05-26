@@ -14,5 +14,5 @@
     "rootDir": "./src",
     "outDir": "./dist"
   },
-  "exclude": ["src/browser", "src/tests"]
+  "include": ["src"]
 }
