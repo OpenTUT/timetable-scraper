@@ -9,7 +9,7 @@
       "import": "./dist/index.js"
     },
     "./browser": {
-      "types": "./src/browser/index.d.ts",
+      "types": "./browser/index.d.ts",
       "import": "./dist/browser/index.js"
     }
   },
