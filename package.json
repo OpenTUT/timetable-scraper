@@ -9,27 +9,29 @@
       "import": "./dist/index.js"
     },
     "./browser": {
-      "types": "./src/browser/index.d.ts",
+      "types": "./browser/index.d.ts",
       "import": "./dist/browser/index.js"
     }
   },
   "files": ["dist", "src"],
   "scripts": {
-    "build": "rimraf dist && tsc -b && rollup -c",
-    "clean": "rimraf dist",
+    "build": "tsc -b && rolldown -c rolldown.config.ts",
+    "clean": "tsc -b --clean && rimraf dist",
     "prepack": "npm run clean && npm run build",
     "lint": "biome lint",
-    "format": "biome format"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "1.9.4",
-    "@rollup/plugin-typescript": "^12.1.2",
-    "rimraf": "^6.0.1",
-    "rollup": "^4.41.1",
-    "tslib": "^2.8.1",
-    "typescript": "^5.8.3"
+    "format": "biome format",
+    "test": "vitest"
   },
   "dependencies": {
     "zod": "^3.25.28"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@types/node": "^22.15.21",
+    "jsdom": "^26.1.0",
+    "rimraf": "^6.0.1",
+    "rolldown": "^1.0.0-beta.9",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.4"
   }
 }

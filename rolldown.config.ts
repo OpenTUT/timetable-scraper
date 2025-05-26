@@ -1,13 +1,11 @@
-import typescript from '@rollup/plugin-typescript';
-import { defineConfig } from 'rollup';
+import { defineConfig } from 'rolldown';
 
 export default defineConfig({
-  input: 'src/browser/index.ts',
+  input: 'browser/index.ts',
   output: {
     dir: 'dist/browser',
   },
   plugins: [
-    typescript({ tsconfig: 'tsconfig.browser.json' }),
     {
       name: 'export-js-as-string',
       generateBundle(_, bundle) {

@@ -1,4 +1,4 @@
-import { scraper } from './scraper';
+import { scraper } from '../src/scraper.js';
 
 declare global {
   interface Window {
