@@ -1,33 +1,27 @@
+import type { DreamCampusSubject } from './dreamCampus/subject.js';
+import type { DreamCampusTimetable } from './dreamCampus/timetable.js';
 import type { Subject } from './Subject.js';
 import type { Timetable } from './Timetable.js';
 
-export function scraper(): Timetable | null {
+export function scraper(
+  dreamCampusTimetable: DreamCampusTimetable,
+): Timetable | null {
   let year: string | null = null;
 
   const getFirstOrNull = <T>(arr: T[]) => (arr.length > 0 ? arr[0] : null);
 
-  const getTextOrNull = (elm: HTMLElement | null) => {
-    const text = elm?.textContent?.trim();
-    return text ? text : null;
-  };
-
-  const getSubject = (elm: HTMLElement): Subject | null => {
-    const subject = elm.querySelector<HTMLAnchorElement>(
-      'span[id$="_lblSbjName"] > a',
-    );
+  const getSubject = (
+    dreamCampusSubject: DreamCampusSubject,
+  ): Subject | null => {
+    const subject = dreamCampusSubject.url;
     if (!subject) {
       return null;
     }
 
     // TODO: キャンセル済み科目を除外
-    const cancel = getTextOrNull(
-      elm.querySelector('span[id$="_lblCancelName"]'),
-    );
 
     // 抽選中科目を置換, 当選科目以外を除外
-    const duringLot = getTextOrNull(
-      elm.querySelector('span[id$="_lblAdjustName"]'),
-    );
+    const duringLot = dreamCampusSubject.adjustName;
     if (duringLot === '抽選対象') {
       return {
         id: 'during_lot',
@@ -39,22 +33,18 @@ export function scraper(): Timetable | null {
         staff: null,
       };
     }
-    const lotResult = getTextOrNull(
-      elm.querySelector('span[id$="_lblLotResultName"]'),
-    );
+    const lotResult = dreamCampusSubject.lotResultName;
     if (lotResult && lotResult !== '当選') {
       return null;
     }
 
-    const id = getTextOrNull(elm.querySelector('span[id$="_lblLctCd"]'));
-    const url = new URL(subject.href);
-    const name = getTextOrNull(subject);
-    const required = getTextOrNull(
-      elm.querySelector('span[id$="_lblSbjDivName"]'),
-    );
-    const term = getTextOrNull(elm.querySelector('span[id$="_lblTermName"]'));
-    const units = getTextOrNull(elm.querySelector('span[id$="_lblCredit"]'));
-    const staff = getTextOrNull(elm.querySelector('span[id$="_lblStaffName"]'));
+    const id = dreamCampusSubject.lctCd;
+    const url = new URL(subject);
+    const name = dreamCampusSubject.sbjName;
+    const required = dreamCampusSubject.sbjDivName;
+    const term = dreamCampusSubject.termName;
+    const units = dreamCampusSubject.credit;
+    const staff = dreamCampusSubject.staffName;
 
     if (!year) {
       year = url.searchParams.get('lct_year');
@@ -76,32 +66,16 @@ export function scraper(): Timetable | null {
   };
 
   try {
-    const belong = getTextOrNull(
-      document.querySelector<HTMLSpanElement>('#ctl00_bhHeader_lblBelong'),
-    );
+    const belong = dreamCampusTimetable.belong;
 
-    const semester =
-      document.querySelector<HTMLSelectElement>('#ctl00_phContents_ddlTerm')
-        ?.value === '1'
-        ? 'spring'
-        : 'fall';
+    const semester = dreamCampusTimetable.term === '1' ? 'spring' : 'fall';
 
-    const normal = [
-      ...document.querySelectorAll<HTMLTableRowElement>(
-        '#tblLecture > tbody > tr',
-      ),
-    ]
-      .slice(2, 8)
+    const normal = dreamCampusTimetable.lecture
+      .slice(0, 6)
       .map((row) =>
-        [...row.querySelectorAll<HTMLTableCellElement>(':scope > td')]
-          .slice(1, 6)
-          .map((col) =>
-            [
-              ...col.querySelectorAll<HTMLDivElement>(
-                ':scope > div > div[id$="_divDetail"]',
-              ),
-            ].flatMap((elm) => getSubject(elm) ?? []),
-          ),
+        row
+          .slice(0, 5)
+          .map((col) => col.flatMap((elm) => getSubject(elm) ?? [])),
       );
 
     const firstHalf = normal.map((row) =>
@@ -150,19 +124,11 @@ export function scraper(): Timetable | null {
       ),
     );
 
-    const intensive = [
-      ...document.querySelectorAll<HTMLTableRowElement>(
-        '#tblOhters > tbody > tr',
-      ),
-    ].map((row) =>
-      [...row.querySelectorAll<HTMLTableCellElement>(':scope > td')]
-        .slice(1)
-        .map((col) => {
-          const elm = col.querySelector<HTMLDivElement>(
-            ':scope > div > div[id$="_divDetail"]',
-          );
-          return elm ? getSubject(elm) : null;
-        }),
+    const intensive = dreamCampusTimetable.others.map((row) =>
+      row.map((col) => {
+        const elm = getFirstOrNull(col);
+        return elm ? getSubject(elm) : null;
+      }),
     );
 
     if (!year || !belong) {

@@ -1,4 +1,4 @@
-import { scraper } from '../src/scraper.js';
+import { getDreamCampusTimetable } from '../src/dreamCampus';
 
 declare global {
   interface Window {
@@ -9,5 +9,5 @@ declare global {
 }
 
 window.ReactNativeWebView?.postMessage(
-  JSON.stringify({ type: 'timetable', data: scraper() }),
+  JSON.stringify({ type: 'timetable', data: getDreamCampusTimetable() }),
 );
