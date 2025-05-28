@@ -17,10 +17,13 @@ export function getSubject(
       id: 'during_lot',
       url: '',
       name: '抽選中',
+      area: null,
       required: null,
       term: null,
       units: null,
+      grade: null,
       staff: null,
+      room: null,
     };
   }
   const lotResult = dreamCampusSubject.lotResultName;
@@ -44,9 +47,12 @@ export function getSubject(
     id,
     url: url.toString(),
     name,
+    area: null,
     required,
     term,
     units,
+    grade: null,
     staff,
+    room: null,
   };
 }
