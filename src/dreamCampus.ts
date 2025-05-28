@@ -1,54 +1,65 @@
-import type { DreamCampusSubject } from './schemas/DreamCampusSubject.js';
-import type { DreamCampusTimetable } from './schemas/DreamCampusTimetable.js';
+import type { DreamCampusSubject } from './schemas/dreamCampusSubject.js';
 
-export function getDreamCampusTimetable(): DreamCampusTimetable {
-  return {
-    belong: getTextOrNull(document.querySelector('#ctl00_bhHeader_lblBelong')),
-    term:
-      document.querySelector<HTMLSelectElement>('#ctl00_phContents_ddlTerm')
-        ?.value ?? null,
-    lecture: [...document.querySelectorAll('#tblLecture > tbody > tr')]
-      .slice(2)
-      .map((row) =>
-        [...row.querySelectorAll(':scope > td')]
-          .slice(1)
-          .map((col) =>
-            [
-              ...col.querySelectorAll(':scope > div > div[id$="_divDetail"]'),
-            ].flatMap((elm) => getDreamCampusSubject(elm) ?? []),
-          ),
+export function getDreamCampusTimetable(): unknown {
+  try {
+    return {
+      belong: getTextOrNull(
+        document.querySelector('#ctl00_bhHeader_lblBelong'),
       ),
-    others: [...document.querySelectorAll('#tblOhters > tbody > tr')].map(
-      (row) =>
-        [...row.querySelectorAll(':scope > td')]
-          .slice(1)
-          .map((col) =>
-            [
-              ...col.querySelectorAll(':scope > div > div[id$="_divDetail"]'),
-            ].flatMap((elm) => getDreamCampusSubject(elm) ?? []),
-          ),
-    ),
-  };
+      term:
+        document.querySelector<HTMLSelectElement>('#ctl00_phContents_ddlTerm')
+          ?.value ?? null,
+      lecture: [...document.querySelectorAll('#tblLecture > tbody > tr')]
+        .slice(2)
+        .map((row) =>
+          [...row.querySelectorAll(':scope > td')]
+            .slice(1)
+            .map((col) =>
+              [
+                ...col.querySelectorAll(':scope > div > div[id$="_divDetail"]'),
+              ].flatMap((element) => getDreamCampusSubject(element) ?? []),
+            ),
+        ),
+      others: [...document.querySelectorAll('#tblOhters > tbody > tr')].map(
+        (row) =>
+          [...row.querySelectorAll(':scope > td')]
+            .slice(1)
+            .map((col) =>
+              [
+                ...col.querySelectorAll(':scope > div > div[id$="_divDetail"]'),
+              ].flatMap((element) => getDreamCampusSubject(element) ?? []),
+            ),
+      ),
+    };
+  } catch {
+    return null;
+  }
 }
 
-function getDreamCampusSubject(elm: Element): DreamCampusSubject {
+function getDreamCampusSubject(element: Element): DreamCampusSubject {
   return {
-    lctCd: getTextOrNull(elm.querySelector('span[id$="_lblLctCd"]')),
-    reqName: getTextOrNull(elm.querySelector('span[id$="_lblReqName"]')),
-    credit: getTextOrNull(elm.querySelector('span[id$="_lblCredit"]')),
-    termName: getTextOrNull(elm.querySelector('span[id$="_lblTermName"]')),
-    sbjDivName: getTextOrNull(elm.querySelector('span[id$="_lblSbjDivName"]')),
-    sbjName: getTextOrNull(elm.querySelector('span[id$="_lblSbjName"]')),
+    lctCd: getTextOrNull(element.querySelector('span[id$="_lblLctCd"]')),
+    reqName: getTextOrNull(element.querySelector('span[id$="_lblReqName"]')),
+    credit: getTextOrNull(element.querySelector('span[id$="_lblCredit"]')),
+    termName: getTextOrNull(element.querySelector('span[id$="_lblTermName"]')),
+    sbjDivName: getTextOrNull(
+      element.querySelector('span[id$="_lblSbjDivName"]'),
+    ),
+    sbjName: getTextOrNull(element.querySelector('span[id$="_lblSbjName"]')),
     url:
-      elm.querySelector<HTMLAnchorElement>('span[id$="_lblSbjName"] > a')
+      element.querySelector<HTMLAnchorElement>('span[id$="_lblSbjName"] > a')
         ?.href ?? null,
-    cancelName: getTextOrNull(elm.querySelector('span[id$="_lblCancelName"]')),
-    staffName: getTextOrNull(elm.querySelector('span[id$="_lblStaffName"]')),
+    cancelName: getTextOrNull(
+      element.querySelector('span[id$="_lblCancelName"]'),
+    ),
+    staffName: getTextOrNull(
+      element.querySelector('span[id$="_lblStaffName"]'),
+    ),
     adjustName: getTextOrNull(
-      elm.querySelector('span[id$="_lblLotAdjustName"]'),
+      element.querySelector('span[id$="_lblLotAdjustName"]'),
     ),
     lotResultName: getTextOrNull(
-      elm.querySelector('span[id$="_lblLotResultName"]'),
+      element.querySelector('span[id$="_lblLotResultName"]'),
     ),
   };
 }

@@ -1,2 +1,2 @@
-declare const scraperCode: string;
-export default scraperCode;
+declare const scraperJs: string;
+export default scraperJs;

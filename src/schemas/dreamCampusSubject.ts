@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const DreamCampusSubject = z.object({
+export const DreamCampusSubject = z.strictObject({
   lctCd: z.string().nullable(),
   reqName: z.string().nullable(),
   credit: z.string().nullable(),
