@@ -1,6 +1,6 @@
 {
   "name": "timetable-scraper",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -13,7 +13,7 @@
       "import": "./dist/browser/index.js"
     }
   },
-  "files": ["dist", "src"],
+  "files": ["dist", "src", "browser"],
   "scripts": {
     "build": "tsc -b && rolldown -c rolldown.config.ts",
     "clean": "tsc -b --clean && rimraf dist",
