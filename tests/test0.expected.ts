@@ -1,7 +1,7 @@
 export default {
-  year: '2024',
   belong: '工学部　情報・知能工学課程　３年次入学 3年',
-  semester: 'fall',
+  year: '2024',
+  term: 'fall',
   firstHalf: [
     [
       {

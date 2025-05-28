@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const WebViewMessage = z.strictObject({
-  type: z.string(),
+  type: z.enum(['loading', 'successful', 'failed']),
   data: z.unknown(),
 });
 

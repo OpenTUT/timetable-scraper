@@ -1,12 +1,11 @@
-import type { DreamCampusSubject } from './schemas/dreamCampusSubject.js';
-import type { DreamCampusTimetable } from './schemas/dreamCampusTimetable.js';
-import type { Subject } from './schemas/subject.js';
-import type { Timetable } from './schemas/timetable.js';
+import type { DreamCampusTimetable, Timetable } from './schemas/index.js';
+import { getSubject } from './subject.js';
 
 export function getTimetable(
   dreamCampusTimetable: DreamCampusTimetable,
 ): Timetable | null {
   try {
+    const belong = dreamCampusTimetable.belong;
     const year = getFirstOrNull(
       dreamCampusTimetable.lecture
         .flat(3)
@@ -16,10 +15,11 @@ export function getTimetable(
             : (new URL(subject.url).searchParams.get('lct_year') ?? []),
         ),
     );
+    const term = dreamCampusTimetable.term;
 
-    const belong = dreamCampusTimetable.belong;
-
-    const semester = dreamCampusTimetable.term === '1' ? 'spring' : 'fall';
+    if (belong == null || year == null || term == null) {
+      throw new Error('failed');
+    }
 
     const normal = dreamCampusTimetable.lecture
       .slice(0, 6)
@@ -33,7 +33,7 @@ export function getTimetable(
       row.map((col) =>
         getFirstOrNull(
           col.filter((subject) => {
-            switch (semester) {
+            switch (term) {
               case 'spring':
                 return (
                   !subject.term?.includes('前期２') &&
@@ -44,8 +44,6 @@ export function getTimetable(
                   !subject.term?.includes('後期２') &&
                   !subject.term?.includes('後２')
                 );
-              default:
-                return true;
             }
           }),
         ),
@@ -56,7 +54,7 @@ export function getTimetable(
       row.map((col) =>
         getFirstOrNull(
           col.filter((subject) => {
-            switch (semester) {
+            switch (term) {
               case 'spring':
                 return (
                   !subject.term?.includes('前期１') &&
@@ -67,8 +65,6 @@ export function getTimetable(
                   !subject.term?.includes('後期１') &&
                   !subject.term?.includes('後１')
                 );
-              default:
-                return true;
             }
           }),
         ),
@@ -82,14 +78,10 @@ export function getTimetable(
       }),
     );
 
-    if (!year || !belong) {
-      throw new Error('failed');
-    }
-
     return {
-      year,
       belong,
-      semester,
+      year,
+      term,
       firstHalf,
       secondHalf,
       intensive,
@@ -97,55 +89,6 @@ export function getTimetable(
   } catch {
     return null;
   }
-}
-
-function getSubject(dreamCampusSubject: DreamCampusSubject): Subject | null {
-  const subject = dreamCampusSubject.url;
-  if (!subject) {
-    return null;
-  }
-
-  // TODO: キャンセル済み科目を除外
-
-  // 抽選中科目を置換, 当選科目以外を除外
-  const duringLot = dreamCampusSubject.adjustName;
-  if (duringLot === '抽選対象') {
-    return {
-      id: 'during_lot',
-      url: '',
-      name: '抽選中',
-      required: null,
-      term: null,
-      units: null,
-      staff: null,
-    };
-  }
-  const lotResult = dreamCampusSubject.lotResultName;
-  if (lotResult && lotResult !== '当選') {
-    return null;
-  }
-
-  const id = dreamCampusSubject.lctCd;
-  const url = new URL(subject);
-  const name = dreamCampusSubject.sbjName;
-  const required = dreamCampusSubject.sbjDivName;
-  const term = dreamCampusSubject.termName;
-  const units = dreamCampusSubject.credit;
-  const staff = dreamCampusSubject.staffName;
-
-  if (!id || !name) {
-    throw new Error('failed');
-  }
-
-  return {
-    id,
-    url: url.toString(),
-    name,
-    required,
-    term,
-    units,
-    staff,
-  };
 }
 
 function getFirstOrNull<T>(arr: T[]): T | null {

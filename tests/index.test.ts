@@ -1,11 +1,7 @@
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
 import { describe, expect, test } from 'vitest';
-import {
-  DreamCampusTimetable,
-  getDreamCampusTimetable,
-  getTimetable,
-} from '../src/index.js';
+import { getDreamCampusTimetable } from '../src/dreamCampus/index.js';
+import { DreamCampusTimetable, getTimetable } from '../src/index.js';
+import { loadHTML } from './loadHTML.js';
 import test0Expected from './test0.expected.js';
 
 describe('getSubject', () => {
@@ -20,8 +16,3 @@ describe('getSubject', () => {
     expect(timetable).toStrictEqual(test0Expected);
   });
 });
-
-function loadHTML(relativePath: string) {
-  const html = readFileSync(join(import.meta.dirname, relativePath), 'utf-8');
-  document.body.innerHTML = html;
-}
