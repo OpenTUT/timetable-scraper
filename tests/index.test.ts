@@ -1,9 +1,8 @@
 import { describe, expect, test } from 'vitest';
 import { getDreamCampusTimetable } from '../src/dreamCampus/index.js';
-import { DreamCampusTimetable, getTimetable } from '../src/index.js';
+import { getTimetable } from '../src/index.js';
 import { loadHTML } from './loadHTML.js';
-import test0Expected from './test0.expected.js';
-import { writeFileSync } from 'fs';
+import test0_expected from './test0.expected.js';
 
 describe('getSubject', () => {
   test('getTimetable returns correct object', () => {
@@ -12,6 +11,6 @@ describe('getSubject', () => {
     const dreamCampusTimetable = getDreamCampusTimetable();
     const timetable = getTimetable(dreamCampusTimetable);
 
-    expect(timetable).toStrictEqual(test0Expected);
+    expect(timetable).toStrictEqual(test0_expected);
   });
 });
