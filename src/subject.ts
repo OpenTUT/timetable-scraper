@@ -12,10 +12,9 @@ export function getSubject(
   }
 
   const status =
-    dreamCampusSubject.adjustName === '抽選対象'
+    dreamCampusSubject.lotResultName === '抽選対象'
       ? 'lot_pending'
-      : dreamCampusSubject.lotResultName &&
-          dreamCampusSubject.lotResultName !== '当選'
+      : dreamCampusSubject.lotResultName === '抽選漏れ'
         ? 'lot_rejected'
         : dreamCampusSubject.cancelName === '【履修取消】'
           ? 'canceled'

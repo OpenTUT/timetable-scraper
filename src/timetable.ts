@@ -1,4 +1,8 @@
-import type { DreamCampusTimetable, Timetable } from './schemas/index.js';
+import type {
+  DreamCampusTimetable,
+  Subject,
+  Timetable,
+} from './schemas/index.js';
 import { getSubject } from './subject.js';
 
 export function getTimetable(
@@ -32,20 +36,22 @@ export function getTimetable(
     const firstHalf = normal.map((row) =>
       row.map((col) =>
         getFirstOrNull(
-          col.filter((subject) => {
-            switch (term) {
-              case 'spring':
-                return (
-                  !subject.term?.includes('前期２') &&
-                  !subject.term?.includes('前２')
-                );
-              case 'fall':
-                return (
-                  !subject.term?.includes('後期２') &&
-                  !subject.term?.includes('後２')
-                );
-            }
-          }),
+          sortEnrolled(
+            col.filter((subject) => {
+              switch (term) {
+                case 'spring':
+                  return (
+                    !subject.term?.includes('前期２') &&
+                    !subject.term?.includes('前２')
+                  );
+                case 'fall':
+                  return (
+                    !subject.term?.includes('後期２') &&
+                    !subject.term?.includes('後２')
+                  );
+              }
+            }),
+          ),
         ),
       ),
     );
@@ -53,28 +59,31 @@ export function getTimetable(
     const secondHalf = normal.map((row) =>
       row.map((col) =>
         getFirstOrNull(
-          col.filter((subject) => {
-            switch (term) {
-              case 'spring':
-                return (
-                  !subject.term?.includes('前期１') &&
-                  !subject.term?.includes('前１')
-                );
-              case 'fall':
-                return (
-                  !subject.term?.includes('後期１') &&
-                  !subject.term?.includes('後１')
-                );
-            }
-          }),
+          sortEnrolled(
+            col.filter((subject) => {
+              switch (term) {
+                case 'spring':
+                  return (
+                    !subject.term?.includes('前期１') &&
+                    !subject.term?.includes('前１')
+                  );
+                case 'fall':
+                  return (
+                    !subject.term?.includes('後期１') &&
+                    !subject.term?.includes('後１')
+                  );
+              }
+            }),
+          ),
         ),
       ),
     );
 
     const intensive = dreamCampusTimetable.others.map((row) =>
       row.map((col) => {
-        const subject = getFirstOrNull(col);
-        return subject ? getSubject(subject) : null;
+        const subjects = col.flatMap((subject) => getSubject(subject) ?? []);
+        const subject = getFirstOrNull(sortEnrolled(subjects));
+        return subject ? subject : null;
       }),
     );
 
@@ -93,4 +102,8 @@ export function getTimetable(
 
 function getFirstOrNull<T>(arr: T[]): T | null {
   return arr.length > 0 ? arr[0] : null;
+}
+
+function sortEnrolled(arr: Subject[]): Subject[] {
+  return arr.toSorted((subject) => (subject.status === 'enrolled' ? -1 : 0));
 }
