@@ -105,5 +105,5 @@ function getFirstOrNull<T>(arr: T[]): T | null {
 }
 
 function sortEnrolled(arr: Subject[]): Subject[] {
-  return arr.toSorted((subject) => (subject.status === 'enrolled' ? -1 : 0));
+  return [...arr].sort((subject) => (subject.status === 'enrolled' ? -1 : 0));
 }
